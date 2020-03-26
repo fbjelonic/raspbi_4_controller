@@ -19,6 +19,12 @@ void RaspbiController::setupI2C()
         ros::shutdown();
     }
     ROS_INFO("Successfully init I2C communication with arduino!");
+    int i = 0;
+    while (i<100) {
+        wiringPiI2CWrite(msgStream_, i);
+        i++;
+        ROS_INFO("Send: %d", i);
+    }
 }
 
 void RaspbiController::initPins()
@@ -45,8 +51,8 @@ RaspbiController::~RaspbiController()
 
 void RaspbiController::servoCallback(const std_msgs::UInt16 &msg)
 {
-    wiringPiI2CWrite(msgStream_, msg.data);
-    ROS_INFO("Got the message: Twist Sensor to %u Degrees", msg.data);
+     wiringPiI2CWrite(msgStream_, msg.data);
+     ROS_INFO("Got the message: Twist Sensor to %u Degrees", msg.data);
 }
 
 void RaspbiController::driveCallback(const geometry_msgs::Twist &msg)
@@ -67,10 +73,10 @@ void RaspbiController::driveCallback(const geometry_msgs::Twist &msg)
     else if (right_wheel < -255) {
         right_wheel = -255;
     }
-//    softPwmWrite(leftMotorSpeedPin_, left_wheel);
-//    softPwmWrite(rightMotorSpeedPin_, right_wheel);
-//    digitalWrite(leftMotorDirPin_, left_dir);
-//    digitalWrite(rightMotorDirPin_, right_dir);
+
+    left_wheel = abs(left_wheel);
+    right_wheel = abs(right_wheel);
+
 //    ROS_INFO("Got the message. Left wheel to %d and right wheel to %d", left_wheel, right_wheel);
 }
 
