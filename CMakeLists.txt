@@ -157,6 +157,8 @@ add_executable(${PROJECT_NAME}
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
+  -lwiringPi
+  -lpthread
 )
 
 #############
