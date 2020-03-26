@@ -47,9 +47,9 @@ void RaspbiController::servoCallback(const std_msgs::UInt16 &msg)
 {
     wiringPiI2CWrite(msgStream_, msg.data);
     ROS_INFO("Got the message: Twist Sensor to %u Degrees", msg.data);
-    ros::Duration(0.5).sleep(); // wait 0.5 seconds
-    int received_data = wiringPiI2CRead(msgStream_);
-    ROS_INFO("Data received: %d", received_data);
+//    ros::Duration(0.5).sleep(); // wait 0.5 seconds
+//    int received_data = wiringPiI2CRead(msgStream_);
+//    ROS_INFO("Data received: %d", received_data);
 }
 
 void RaspbiController::driveCallback(const geometry_msgs::Twist &msg)
