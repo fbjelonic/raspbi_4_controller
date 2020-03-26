@@ -23,9 +23,8 @@ public:
     void driveCallback(const geometry_msgs::Twist &msg);
 
 private:
-    void initPins();
     void setupI2C();
-    void sendMessage(const std::vector<int> msg);
+    void sendMessage(const std::vector<int> &msg);
 
     int msgStream_;
 
