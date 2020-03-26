@@ -159,6 +159,7 @@ target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
   -lwiringPi
   -lpthread
+  -lrt
 )
 
 #############
