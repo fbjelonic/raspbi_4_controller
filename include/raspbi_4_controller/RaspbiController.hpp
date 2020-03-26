@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ros/ros.h>
+#include <vector>
 #include "std_msgs/UInt16.h"
 #include "sensor_msgs/Joy.h"
 #include "geometry_msgs/Twist.h"
@@ -24,6 +25,7 @@ public:
 private:
     void initPins();
     void setupI2C();
+    void sendMessage(const std::vector<char> msg);
 
     int msgStream_;
 

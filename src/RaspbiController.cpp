@@ -6,7 +6,7 @@ RaspbiController::RaspbiController(ros::NodeHandle& nodeHandle):
     nodeHandle_(nodeHandle)
 {
     setupI2C();
-    initPins();
+    // initPins();
     servo_sub_ = nodeHandle_.subscribe("/servo", 10, &RaspbiController::servoCallback ,this);
     drive_sub_ = nodeHandle_.subscribe("/drive", 10, &RaspbiController::driveCallback, this);
 }
@@ -19,11 +19,18 @@ void RaspbiController::setupI2C()
         ros::shutdown();
     }
     ROS_INFO("Successfully init I2C communication with arduino!");
-    int i = 0;
-    while (i<100) {
-        wiringPiI2CWrite(msgStream_, i);
-        i++;
-        ROS_INFO("Send: %d", i);
+    std::vector<char> send = {' ', static_cast<char>(60)};
+    std::vector<char> send2 {' ', static_cast<char>(200), static_cast<char>(-300)};
+    for (int i = 0; i < 100 ; i++) {
+        sendMessage(send);
+        sendMessage(send2);
+    }
+}
+
+void RaspbiController::sendMessage(const std::vector<char> msg)
+{
+    for (size_t i=0 ; i < msg.size() ; i++) {
+         wiringPiI2CWrite(msgStream_, msg.at(i));
     }
 }
 
