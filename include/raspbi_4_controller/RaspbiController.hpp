@@ -5,7 +5,10 @@
 #include "sensor_msgs/Joy.h"
 #include "geometry_msgs/Twist.h"
 #include "wiringPi.h"
+#include "wiringPiI2C.h"
 #include "softPwm.h"
+
+#define DEVICE_ID 0x08
 
 namespace raspbi_controller
 {
@@ -20,6 +23,9 @@ public:
 
 private:
     void initPins();
+    void setupI2C();
+
+    int msgStream_;
 
     int sonicServoPin_;
     int leftMotorSpeedPin_;

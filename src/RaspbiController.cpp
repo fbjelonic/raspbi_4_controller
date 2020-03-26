@@ -5,9 +5,20 @@ namespace raspbi_controller {
 RaspbiController::RaspbiController(ros::NodeHandle& nodeHandle):
     nodeHandle_(nodeHandle)
 {
+    setupI2C();
     initPins();
     servo_sub_ = nodeHandle_.subscribe("/servo", 10, &RaspbiController::servoCallback ,this);
     drive_sub_ = nodeHandle_.subscribe("/drive", 10, &RaspbiController::driveCallback, this);
+}
+
+void RaspbiController::setupI2C()
+{
+    msgStream_ = wiringPiI2CSetup(DEVICE_ID);
+    if (msgStream_ == -1) {
+        ROS_ERROR("Failed to init I2C communication.");
+        ros::shutdown();
+    }
+    ROS_INFO("Successfully init I2C communication with arduino!");
 }
 
 void RaspbiController::initPins()
@@ -34,8 +45,11 @@ RaspbiController::~RaspbiController()
 
 void RaspbiController::servoCallback(const std_msgs::UInt16 &msg)
 {
-    softPwmWrite(sonicServoPin_, msg.data);
+    wiringPiI2CWrite(msgStream_, msg.data);
     ROS_INFO("Got the message: Twist Sensor to %u Degrees", msg.data);
+    ros::Duration(0.5).sleep(); // wait 0.5 seconds
+    int received_data = wiringPiI2CRead(msgStream_);
+    ROS_INFO("Data received: %d", received_data);
 }
 
 void RaspbiController::driveCallback(const geometry_msgs::Twist &msg)
