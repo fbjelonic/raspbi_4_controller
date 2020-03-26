@@ -25,7 +25,7 @@ public:
 private:
     void initPins();
     void setupI2C();
-    void sendMessage(const std::vector<char> msg);
+    void sendMessage(const std::vector<int> msg);
 
     int msgStream_;
 

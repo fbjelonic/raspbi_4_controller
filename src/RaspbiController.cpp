@@ -19,17 +19,17 @@ void RaspbiController::setupI2C()
         ros::shutdown();
     }
     ROS_INFO("Successfully init I2C communication with arduino!");
-    std::vector<char> send = {' ', static_cast<char>(60)};
-    std::vector<char> send2 {' ', static_cast<char>(200), static_cast<char>(-300)};
-    for (int i = 0; i < 100 ; i++) {
+    std::vector<int> send = {1000, 1, 90};
+    std::vector<int> send2 {1000, 2, 255, -255};
+    for (int i = 0; i < 10 ; i++) {
         sendMessage(send);
-        ROS_INFO("%d", send.at(1));
+        ROS_INFO("%d, %d", send.at(1), send.at(2));
         sendMessage(send2);
-        ROS_INFO("%d, %d", send2.at(1), send2.at(3));
+        ROS_INFO("%d, %d, %d", send2.at(1), send2.at(2), send2.at(3));
     }
 }
 
-void RaspbiController::sendMessage(const std::vector<char> msg)
+void RaspbiController::sendMessage(const std::vector<int> msg)
 {
     for (size_t i=0 ; i < msg.size() ; i++) {
          wiringPiI2CWrite(msgStream_, msg.at(i));
