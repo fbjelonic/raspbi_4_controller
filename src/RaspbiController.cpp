@@ -23,7 +23,9 @@ void RaspbiController::setupI2C()
     std::vector<char> send2 {' ', static_cast<char>(200), static_cast<char>(-300)};
     for (int i = 0; i < 100 ; i++) {
         sendMessage(send);
+        ROS_INFO("%d", send.at(1));
         sendMessage(send2);
+        ROS_INFO("%d, %d", send2.at(1), send2.at(3));
     }
 }
 
